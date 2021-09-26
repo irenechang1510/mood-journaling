@@ -19,7 +19,6 @@ debugpy==1.4.1
 decorator==5.0.9
 defusedxml==0.7.1
 dill==0.3.1.1
-dlib==19.22.99
 dm-tree==0.1.6
 docopt==0.6.2
 entrypoints==0.3
