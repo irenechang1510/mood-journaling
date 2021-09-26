@@ -23,7 +23,7 @@ class Mood(db.Model):
     timestamp = db.Column(db.DateTime)
     results = db.Column(db.Float)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main():
     table = Mood.query.with_entities(Mood.results).all()
     table = [r for r, in table]
