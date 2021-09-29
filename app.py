@@ -29,6 +29,9 @@ def main():
     table = [r for r, in table]
     return render_template('main.html', results =table)
 
+if __name__ == '__main__':
+    app.run(debug=True)
+
 # @app.route('/', methods=['GET', 'POST'])
 # def main():
 # #     if flask.request.method == 'GET':
@@ -41,8 +44,3 @@ def main():
 #         error_text = "<p>The error:<br>" + str(e) + "</p>"
 #         hed = '<h1>Something is broken.</h1>'
 #         return hed + error_text
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
