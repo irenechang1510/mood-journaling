@@ -138,6 +138,8 @@ PyYAML = "==5.4.1"
 SQLAlchemy = "==1.4.23"
 Werkzeug = "==2.0.1"
 gunicorn = "*"
+spotipy = "*"
+apscheduler = "*"
 
 [dev-packages]
 

@@ -4,12 +4,12 @@
 //   s += "#" + hexColour + ", ";
 // }
 function getColor(rainbow, results, index) {
-  if (results.length > index) {
+  if (results[index] === 0) {
+    return "transparent";
+  } else {
     var hexColour = rainbow.colourAt(Math.round(results[index] * 1000));
     s = "#" + hexColour;
     return s;
-  } else {
-    return "transparent";
   }
 }
 function draw(results) {
