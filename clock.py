@@ -8,6 +8,7 @@ import sqlite3
 from datetime import datetime
 from statistics import median
 
+
 client_id = 'a4601a5ae121413e9450015d6c0febaa'
 client_secret = 'ed18559d5243412281ab9c5e80a0db65'
 username='5dpgk6tgb1w0swe0ni3v8s1c9'
@@ -83,7 +84,9 @@ def get_features_for_playlist2(df, start, stop):
     return df
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+def run():
+    print("this is running")
     mixed = pd.DataFrame(columns=['name', 'artist', 'track_URI', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness', 'loudness', 
     'speechiness', 'tempo', 'valence'])
     curr_time = int(round(time.time() * 1000))

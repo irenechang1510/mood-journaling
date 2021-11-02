@@ -1,17 +1,14 @@
-// var s = "";
-// for (var i = 1; i <= numberOfItems; i++) {
-//   var hexColour = rainbow.colourAt(i);
-//   s += "#" + hexColour + ", ";
-// }
 function getColor(rainbow, results, index) {
   if (results[index] === 0) {
     return "transparent";
   } else {
+    // console.log(Math.round(results[index] * 1000));
     var hexColour = rainbow.colourAt(Math.round(results[index] * 1000));
     s = "#" + hexColour;
     return s;
   }
 }
+
 function draw(results) {
   var rainbow = new Rainbow();
   rainbow.setNumberRange(1, 1000);
@@ -22,7 +19,7 @@ function draw(results) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   });
-  console.log(results.length);
+  // console.log("hello");
   // block 1
   c.beginPath();
   c.moveTo(-Math.sqrt(110716) + 700, 522);
@@ -393,14 +390,12 @@ function draw(results) {
 
   // block 30
   c.beginPath();
-  c.moveTo(820, 435);
-  c.lineTo(693, 500);
-  c.lineTo(700, 440);
-  c.quadraticCurveTo(747, 417, 748, 400);
-  c.bezierCurveTo(780, 420, 750, 365, 780, 350);
-  c.bezierCurveTo(800, 390, 810, 330, 820, 360);
-  c.bezierCurveTo(818, 380, 830, 350, 835, 370);
-  c.bezierCurveTo(843, 380, 848, 365, 850, 380);
+  c.moveTo(850, 380);
+  c.bezierCurveTo(870, 450, 870, 390, 890, 420);
+  c.bezierCurveTo(920, 450, 890, 340, 962, 400);
+  c.quadraticCurveTo(999, 432, 1030, 440);
+  c.lineTo(900, 470);
+  c.lineTo(820, 435);
   c.closePath();
   c.fillStyle = getColor(rainbow, results, 29);
   c.fill();
@@ -410,12 +405,14 @@ function draw(results) {
 
   // block 31
   c.beginPath();
-  c.moveTo(850, 380);
-  c.bezierCurveTo(870, 450, 870, 390, 890, 420);
-  c.bezierCurveTo(920, 450, 890, 340, 962, 400);
-  c.quadraticCurveTo(999, 432, 1030, 440);
-  c.lineTo(900, 470);
-  c.lineTo(820, 435);
+  c.moveTo(820, 435);
+  c.lineTo(693, 500);
+  c.lineTo(700, 440);
+  c.quadraticCurveTo(747, 417, 748, 400);
+  c.bezierCurveTo(780, 420, 750, 365, 780, 350);
+  c.bezierCurveTo(800, 390, 810, 330, 820, 360);
+  c.bezierCurveTo(818, 380, 830, 350, 835, 370);
+  c.bezierCurveTo(843, 380, 848, 365, 850, 380);
   c.closePath();
   c.fillStyle = getColor(rainbow, results, 30);
   c.fill();
@@ -518,4 +515,3 @@ function draw(results) {
   c.bezierCurveTo(670, 410, 690, 410, 700, 440);
   c.stroke();
 }
-// includeJs("rainbowvis.js");

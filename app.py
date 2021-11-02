@@ -1,15 +1,18 @@
 import flask
-from flask import Flask, jsonify, request, render_template, url_for
-import json
+from flask import Flask, request, render_template, url_for
+from clock import run
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
-
+from flask_apscheduler import APScheduler
 import pickle
+
 with open('models/deploy_model.sav', 'rb') as f:
     model = pickle.load(f)
 
 app = Flask(__name__, template_folder='templates')
+scheduler = APScheduler()
 
+# run()
 db_name = 'schema.sql'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
@@ -27,20 +30,10 @@ class Mood(db.Model):
 def main():
     table = Mood.query.with_entities(Mood.results).all()
     table = [r for r, in table]
+    print(table)
     return render_template('main.html', results =table)
 
 if __name__ == '__main__':
+    scheduler.add_job(id = '123', func=run, trigger="cron", hour=23, minute=58, second=0)
+    scheduler.start()
     app.run(debug=True)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def main():
-# #     if flask.request.method == 'GET':
-# #         return(render_template('main.html'))
-# # def testdb():
-#     try:
-#         db.session.query(text('1')).from_statement(text('SELECT 1')).all()
-#         return '<h1>It works.</h1>'
-#     except Exception as e:
-#         error_text = "<p>The error:<br>" + str(e) + "</p>"
-#         hed = '<h1>Something is broken.</h1>'
-#         return hed + error_text
