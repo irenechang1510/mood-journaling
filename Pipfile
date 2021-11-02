@@ -140,6 +140,7 @@ Werkzeug = "==2.0.1"
 gunicorn = "*"
 spotipy = "*"
 apscheduler = "*"
+flask-apscheduler = "*"
 
 [dev-packages]
 
