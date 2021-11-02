@@ -12,7 +12,6 @@ with open('models/deploy_model.sav', 'rb') as f:
 app = Flask(__name__, template_folder='templates')
 scheduler = APScheduler()
 
-# run()
 db_name = 'schema.sql'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
