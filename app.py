@@ -1,17 +1,13 @@
 import flask
-from flask import Flask, request, render_template, url_for
-from clock import run
+from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
-from flask_apscheduler import APScheduler
 import pickle
 
 with open('models/deploy_model.sav', 'rb') as f:
     model = pickle.load(f)
 
 app = Flask(__name__, template_folder='templates')
-scheduler = APScheduler()
-
 db_name = 'schema.sql'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
@@ -33,6 +29,8 @@ def main():
     return render_template('main.html', results =table)
 
 if __name__ == '__main__':
-    scheduler.add_job(id = '123', func=run, trigger="cron", hour=23, minute=58, second=0)
-    scheduler.start()
     app.run(debug=True)
+
+
+# schedule an update - script 
+# have the update schedule the render
