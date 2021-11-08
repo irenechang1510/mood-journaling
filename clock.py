@@ -9,9 +9,9 @@ from datetime import datetime
 from statistics import median
 
 
-client_id = 'a4601a5ae121413e9450015d6c0febaa'
-client_secret = 'ed18559d5243412281ab9c5e80a0db65'
-username='5dpgk6tgb1w0swe0ni3v8s1c9'
+client_id = 'XXXX'
+client_secret = 'XXXX'
+username='XXX'
 redirect_uri='http://localhost:3000/'
 
 
@@ -32,7 +32,10 @@ def get_daily_songs(start, stop):
     # stop when after is past sep 1st 0am
     while (start > stop):
         recent_play = sp.current_user_recently_played(before=start, limit=50) # start at sep 2nd 0am
-        after = int(recent_play['cursors']['before'])
+        try:
+            after = int(recent_play['cursors']['before'])
+        except:
+            after = stop
         # if goes over, find the limit threshold
         if after < stop:
             limit = get_right_limit(stop, start+1)
@@ -84,14 +87,14 @@ def get_features_for_playlist2(df, start, stop):
     return df
 
 
-# if __name__ == '__main__':
-def run():
+if __name__ == '__main__':
     print("this is running")
     mixed = pd.DataFrame(columns=['name', 'artist', 'track_URI', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness', 'loudness', 
     'speechiness', 'tempo', 'valence'])
     curr_time = int(round(time.time() * 1000))
-    mixed = get_features_for_playlist2(mixed, curr_time, curr_time - 86400000) # get 1 day
+    print("curr time is:", curr_time)
 
+    mixed = get_features_for_playlist2(mixed, curr_time, curr_time - 86400000) # get 1 day
     lr = pickle.load(open('models/deploy_model.sav', 'rb'))
     vnpred = lr.predict_proba(mixed.drop(['name', 'artist', 'track_URI'], axis=1))[:,1]
     mixed.insert(3, 'prediction', vnpred)
