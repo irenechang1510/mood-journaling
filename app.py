@@ -18,19 +18,14 @@ db = SQLAlchemy(app)
 class Mood(db.Model):
     __tablename__ = 'result'
     index = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime)
     results = db.Column(db.Float)
 
 @app.route('/', methods=['GET'])
 def main():
     table = Mood.query.with_entities(Mood.results).all()
     table = [r for r, in table]
-    print(table)
+    print(table) # show results in build log
     return render_template('main.html', results =table)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# schedule an update - script 
-# have the update schedule the render
