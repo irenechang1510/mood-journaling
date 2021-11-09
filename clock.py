@@ -9,8 +9,8 @@ from datetime import datetime
 from statistics import median
 
 
-client_id = 'XXXX'
-client_secret = 'XXXX'
+client_id = 'XXX'
+client_secret = 'XXX'
 username='XXX'
 redirect_uri='http://localhost:3000/'
 
@@ -25,13 +25,32 @@ token = util.prompt_for_user_token(
 sp = spotipy.Spotify(auth=token)
 
 def get_daily_songs(start, stop):
+    '''
+      Purpose: Get the names, URIs, and artists of all the songs listened to in a day
+      
+      Arguments: 
+            start: the starting point, which is Now, going backwards (in millis)
+            stop: 24 hours in the past, aka (Now - 24hrs) (in millis)
+      
+      Returns: The desired tuples. 
+      
+      How this works:
+      Keep getting the next batch of 50 songs until we exceed the 24-hour mark, at which point, we find the max number
+      of songs we can get before exceeding the 24 hour mark. Examples: 
+          
+                  24hr                                                                              <- Now
+    ----------------|-----------------------------------------------------------------------------------|
+                    |.......().......|................()...............|...............()...............|
+                         17 songs                   50 songs                            50 songs
+    |...............()...............|
+                    50 songs
+  
+    '''
     names, uris, artists, recent_list = [], [], [], []
     
-    # get the songs from Sep 1st 0am to Sep 2nd 0am
-
-    # stop when after is past sep 1st 0am
+    # get batch of 50 every time
     while (start > stop):
-        recent_play = sp.current_user_recently_played(before=start, limit=50) # start at sep 2nd 0am
+        recent_play = sp.current_user_recently_played(before=start, limit=50) 
         try:
             after = int(recent_play['cursors']['before'])
         except:
@@ -47,6 +66,7 @@ def get_daily_songs(start, stop):
         recent_list.extend( recent_play['items'] ) 
         start = after
 
+    # after getting the list of songs, extract the information
     for i in range(len(recent_list)):
         this_song = recent_list[i]['track']
         names.append(this_song['name'])
@@ -56,10 +76,21 @@ def get_daily_songs(start, stop):
     return names, uris, artists
 
 def get_right_limit(left, right):
+    '''
+    Purpose: Find the number of songs listened to starting from the previous cursor to the 24hr mark
+
+    Arguments: 
+        left: the 24hr mark - the final cursor obtained should be at some time later that this 
+        right: the time of the previous cursor - aka the starting point for our checking
+
+    Return: The appropriate 'limit' such that the final cursor doesn't exceed the 24 hour mark (=left)
+    '''
     limit=50
     while limit > 0:
         obj = sp.current_user_recently_played(before=right, limit=limit)
         mark = int(obj['cursors']['before'])
+        
+        # right when we encounter a song that gives us a cursor within range, we return the limit.
         if mark > left:
             break
         limit -= 1
@@ -88,23 +119,26 @@ def get_features_for_playlist2(df, start, stop):
 
 
 if __name__ == '__main__':
-    print("this is running")
     mixed = pd.DataFrame(columns=['name', 'artist', 'track_URI', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness', 'loudness', 
     'speechiness', 'tempo', 'valence'])
-    curr_time = int(round(time.time() * 1000))
-    print("curr time is:", curr_time)
 
+    # get all songs from 11:59pm yesterday to 11:59pm today
+    curr_time = int(round(time.time() * 1000))
     mixed = get_features_for_playlist2(mixed, curr_time, curr_time - 86400000) # get 1 day
+
+    # make predictions 
     lr = pickle.load(open('models/deploy_model.sav', 'rb'))
     vnpred = lr.predict_proba(mixed.drop(['name', 'artist', 'track_URI'], axis=1))[:,1]
     mixed.insert(3, 'prediction', vnpred)
 
+    # get the median of all scores -> the mood score of the day
     day_median = float(median(mixed['prediction']))
     this_day = datetime.now().day
 
+    # update the table 
     conn = sqlite3.connect('schema.sql')
     sql = ''' UPDATE result SET results = ? WHERE [index] = ?'''
-    if this_day == 1:
+    if this_day == 1: # if turn to a new month
         result_df = pd.DataFrame(np.zeros(31), columns=['results'])
         result_df.to_sql('result', conn, if_exists='replace')
         cur = conn.cursor()
