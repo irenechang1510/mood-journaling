@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Web app name</title>
+    <title>Mood Journaling</title>
     <link
       rel="stylesheet"
       href="{{url_for('static', filename='styles.css')}}"
@@ -20,8 +20,7 @@
     ></script>
 
     <script type="text/javascript">
-      // draw({{results}});
-      setInterval(draw, 10000, {{results}});
+      draw({{results}});
     </script>
   </body>
 </html>
