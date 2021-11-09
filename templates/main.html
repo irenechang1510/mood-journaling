@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mood Journaling</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='styles.css')}}"
+    />
+    <script
+      src="{{url_for('static', filename='rainbowvis.js')}}"
+      type="text/javascript"
+    ></script>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="1440px" height="789px"></canvas>
+    <script
+      type="text/javascript"
+      src="{{url_for('static', filename='canvas.js')}}"
+    ></script>
+
+    <script type="text/javascript">
+      draw({{results}});
+    </script>
+  </body>
+</html>
