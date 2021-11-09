@@ -2,7 +2,6 @@ function getColor(rainbow, results, index) {
   if (results[index] === 0) {
     return "transparent";
   } else {
-    // console.log(Math.round(results[index] * 1000));
     var hexColour = rainbow.colourAt(Math.round(results[index] * 1000));
     s = "#" + hexColour;
     return s;
@@ -19,7 +18,7 @@ function draw(results) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   });
-  // console.log("hello");
+
   // block 1
   c.beginPath();
   c.moveTo(-Math.sqrt(110716) + 700, 522);
