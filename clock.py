@@ -9,9 +9,9 @@ from datetime import datetime
 from statistics import median
 
 
-client_id = 'XXX'
-client_secret = 'XXX'
-username='XXX'
+client_id = 'a4601a5ae121413e9450015d6c0febaa'
+client_secret = 'ed18559d5243412281ab9c5e80a0db65'
+username='5dpgk6tgb1w0swe0ni3v8s1c9'
 redirect_uri='http://localhost:3000/'
 
 
@@ -45,6 +45,8 @@ def get_daily_songs(start, stop):
     |...............()...............|
                     50 songs
   
+    Note: Spotipy recent update only keeps track of the 50 most recent tracks and discards the rest; so the most number
+    of songs we can get is 50.
     '''
     names, uris, artists, recent_list = [], [], [], []
     
