@@ -9,9 +9,9 @@ from datetime import datetime
 from statistics import median
 
 
-client_id = 'a4601a5ae121413e9450015d6c0febaa'
-client_secret = 'ed18559d5243412281ab9c5e80a0db65'
-username='5dpgk6tgb1w0swe0ni3v8s1c9'
+client_id = 'XXXX'
+client_secret = 'XXXX'
+username='XXX'
 redirect_uri='http://localhost:3000/'
 
 
